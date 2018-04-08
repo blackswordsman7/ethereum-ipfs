@@ -1,40 +1,14 @@
-import web3 from './web3';
+//overrides metamask v0.2 for our 1.0 version. 
+//1.0 lets us use async and await instead of promises
 
-//access our local copy to contract deployed on rinkeby testnet
-//use your own contract address
+const Web3 = require('web3');
 
-const address = '0xd61a5be26e5566207cace49d9cfb7e62b5d07e6b459b34dc0a1928b19fa51463';
+var web3;
 
-//use the ABI from your contract
+if (typeof web3 !== 'undefined') {
+  web3 = new Web3(web3.currentProvider);
+} else {
+  web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:3000"));
+}
 
-const abi = [
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "getHash",
-		"outputs": [
-			{
-				"name": "x",
-				"type": "string"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "x",
-				"type": "string"
-			}
-		],
-		"name": "sendHash",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	}
-]
-export default new web3.eth.Contract(abi, address);
+export default web3;
